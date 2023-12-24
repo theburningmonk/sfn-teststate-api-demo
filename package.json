@@ -1,0 +1,22 @@
+{
+  "name": "sfn-teststate-api-demo",
+  "version": "1.0.0",
+  "description": "Demo project on how to use the TestState API to test a Step Functions state machine",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@aws-sdk/client-sfn": "^3.478.0",
+    "@types/jest": "^29.5.11",
+    "dotenv": "^16.3.1",
+    "jest": "^29.7.0",
+    "serverless": "^3.38.0",
+    "serverless-export-outputs": "^1.0.2",
+    "serverless-logging-config": "^1.0.0",
+    "serverless-step-functions": "^3.18.0"
+  }
+}

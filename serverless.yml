@@ -1,0 +1,57 @@
+service: sfn-teststate-api-demo
+
+frameworkVersion: "3"
+
+plugins:
+  - serverless-step-functions
+  - serverless-logging-config
+  - serverless-export-outputs
+
+package:
+  exclude:
+    - package.json
+    - package-lock.json
+    - serverless.yml
+    - state_machines/**
+    - __tests__/**
+
+custom:
+  serverless-logging-config:
+    logGroupName: my-statemachine-logs
+
+  exportOutputs:
+    - MyStateMachineArn
+    - AWS_REGION: ${aws:region}
+    - Stage: ${sls:stage}
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+
+functions:
+  task1:
+    handler: functions/task1.handler
+
+  task2:
+    handler: functions/task2.handler
+
+  task3:
+    handler: functions/task3.handler
+
+  task4:
+    handler: functions/task4.handler
+
+  task5:
+    handler: functions/task5.handler
+
+stepFunctions:
+  stateMachines:
+    MyStateMachine:
+      id: MyStateMachine
+      name: ${self:service}-${sls:stage}-MyStateMachine
+      definition: ${file(./state_machines/my-stm.yml)}
+      
+resources:
+  Outputs:
+    MyStateMachineArn:
+      Value: !Ref MyStateMachine

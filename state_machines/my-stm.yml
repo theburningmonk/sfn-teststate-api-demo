@@ -1,0 +1,54 @@
+StartAt: Choice 1
+States:
+  Choice 1:
+    Type: Choice
+    Choices:
+      - Variable: "$.choice"
+        StringEquals: "1"
+        Next: Task 1
+      - Variable: "$.choice"
+        StringEquals: "2"
+        Next: Task 2
+    Default: Task 2
+
+  Task 1:
+    Type: Task
+    Resource: !GetAtt task1.Arn
+    Next: Choice 2
+
+  Choice 2:
+    Type: Choice
+    Choices:
+      - Variable: "$.isSuccess"
+        BooleanEquals: true
+        Next: Task 4
+      - Variable: "$.isSuccess"
+        BooleanEquals: false
+        Next: Task 5
+    Default: Task 4
+
+  Task 4:
+    Type: Task
+    Resource: !GetAtt task4.Arn
+    End: true
+
+  Task 5:
+    Type: Task
+    Resource: !GetAtt task5.Arn
+    End: true
+
+  Task 2:
+    Type: Task
+    Resource: !GetAtt task2.Arn
+    Catch:
+      - ErrorEquals: [ "States.ALL" ]
+        Next: Task 3
+    End: true
+
+  Task 3:
+    Type: Task
+    Resource: !GetAtt task3.Arn
+    Next: Fail
+
+  Fail:
+    Type: Fail
